@@ -1,27 +1,23 @@
-import { object, string, number, boolean, array } from "zod";
+import { z } from "zod";
 
-const VariantSchema = object({
-  type: string(),
-  value: string(),
+const VariantValidationSchema = z.object({
+  type: z.string(),
+  value: z.string(),
 });
 
-const InventorySchema = object({
-  quantity: number().min(0, {
-    message: "Quantity must be greater than or equal to 0",
-  }),
-  inStock: boolean(),
+const InventoryValidationSchema = z.object({
+  quantity: z.number().gt(0, { message: "Quantity must be greater than 0" }),
+  inStock: z.boolean(),
 });
 
-const ProductSchema = object({
-  name: string(),
-  description: string(),
-  price: number().min(0, {
-    message: "Price must be greater than or equal to 0",
-  }),
-  category: string(),
-  tags: array(string()),
-  variants: array(VariantSchema),
-  inventory: InventorySchema,
+const ProductValidationSchema = z.object({
+  name: z.string(),
+  description: z.string(),
+  price: z.number().gt(0, { message: "Price must be greater than 0" }),
+  category: z.string(),
+  tags: z.array(z.string()),
+  variants: z.array(VariantValidationSchema),
+  inventory: InventoryValidationSchema,
 });
 
-export default ProductSchema;
+export default ProductValidationSchema;
