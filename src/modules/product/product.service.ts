@@ -6,8 +6,15 @@ const createProduct = async (payLoad: TProduct) => {
   return result;
 };
 
-const getAllProduct = async () => {
-  const result = await ProductModel.find();
+const getAllProduct = async (searchTerm?: string) => {
+  let query = {};
+  if (searchTerm) {
+    const regex = new RegExp(searchTerm, "i");
+    query = {
+      $or: [{ name: regex }, { description: regex }, { category: regex }],
+    };
+  }
+  const result = await ProductModel.find(query);
   return result;
 };
 
@@ -17,8 +24,6 @@ const getProductById = async (productId: string) => {
 };
 
 const updateProduct = async (productId: string, payLoad: PartialTProduct) => {
-  const isExist = await ProductModel.findById(productId);
-
   const result = await ProductModel.findByIdAndUpdate(productId, payLoad, {
     new: true,
   });
