@@ -13,11 +13,21 @@ const createOrder = async (payLoad: TProductOrder) => {
     throw new Error("Insufficient quantity available in inventory");
   }
   const result = await ProductOrderModel.create(payLoad);
+  const updatedProduct = await ProductService.updatedProductQuantity(
+    payLoad.productId,
+    payLoad.quantity
+  );
   return result;
 };
 
-const getAllOrder = async () => {
-  const result = await ProductOrderModel.find();
+const getAllOrder = async (query?: string) => {
+  let filter = {};
+  if (query) {
+    filter = {
+      email: query,
+    };
+  }
+  const result = await ProductOrderModel.find(filter);
   return result;
 };
 

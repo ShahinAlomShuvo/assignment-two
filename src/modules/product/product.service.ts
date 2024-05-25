@@ -31,6 +31,24 @@ const updateProduct = async (productId: string, payLoad: PartialTProduct) => {
   return result;
 };
 
+const updatedProductQuantity = async (productId: string, quantity: number) => {
+  const result = await ProductModel.findByIdAndUpdate(
+    productId,
+    { $inc: { "inventory.quantity": -quantity } },
+    { new: true }
+  );
+
+  if (result && result.inventory.quantity === 0) {
+    await ProductModel.findByIdAndUpdate(
+      productId,
+      { $set: { "inventory.inStock": false } },
+      { new: true }
+    );
+  }
+
+  return result;
+};
+
 const deleteProduct = async (productId: string) => {
   const result = await ProductModel.findByIdAndDelete(productId);
   if (result) return null;
@@ -42,4 +60,5 @@ export const ProductService = {
   getProductById,
   updateProduct,
   deleteProduct,
+  updatedProductQuantity,
 };

@@ -36,7 +36,9 @@ const createOrder = async (req: Request, res: Response) => {
 
 const getAllOrder = async (req: Request, res: Response) => {
   try {
-    const result = await OrderService.getAllOrder();
+    const query = req.query?.email?.toString();
+    const result = await OrderService.getAllOrder(query);
+
     res.status(200).json({
       success: true,
       message: "Order fetched successfully!",
