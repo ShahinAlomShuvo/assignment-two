@@ -35,9 +35,13 @@ const getAllProduct = async (req: Request, res: Response) => {
   try {
     const searchTerm = req.query.searchTerm?.toString();
     const result = await ProductService.getAllProduct(searchTerm);
+    let message = "Products fetched successfully!";
+    if (searchTerm) {
+      message = `Products matching search term '${searchTerm}' fetched successfully!`;
+    }
     res.status(200).json({
       success: true,
-      message: "Products fetched successfully!",
+      message: message,
       data: result,
     });
   } catch (error) {
