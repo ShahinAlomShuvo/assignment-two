@@ -22,7 +22,7 @@ npm install
 
 ### 3. Environment Variables
 
-## Create a .env file in the root of your project and add the following environment variables:
+#### Create a .env file in the root of your project and add the following environment variables:
 
 ```env
 PORT='port you want to run'
@@ -31,17 +31,17 @@ DB_URL="your mongodb url"
 
 ### 4. Run the Application
 
-## Development Mode
+#### Development Mode
 
-# To run the application in development mode with hot-reloading, use the following command:
+##### To run the application in development mode with hot-reloading, use the following command:
 
 ```bash
 npm run start:dev
 ```
 
-## Production Mode
+#### Production Mode
 
-# To build and run the application in production mode, use the following commands:
+##### To build and run the application in production mode, use the following commands:
 
 ```bash
 # Transpile TypeScript to JavaScript
