@@ -4,6 +4,7 @@ import {
   ProductValidationSchema,
 } from "./product.validate";
 import { ProductService } from "./product.service";
+import { z } from "zod";
 
 const createProduct = async (req: Request, res: Response) => {
   try {
@@ -15,6 +16,13 @@ const createProduct = async (req: Request, res: Response) => {
       data: result,
     });
   } catch (error) {
+    if (error instanceof z.ZodError) {
+      return res.status(400).json({
+        success: false,
+        message: "Validation error",
+        errors: error.errors,
+      });
+    }
     res.status(500).json({
       success: false,
       message: "Something went wrong!",
@@ -29,7 +37,7 @@ const getAllProduct = async (req: Request, res: Response) => {
     const result = await ProductService.getAllProduct(searchTerm);
     res.status(200).json({
       success: true,
-      message: "Product fetched successfully!",
+      message: "Products fetched successfully!",
       data: result,
     });
   } catch (error) {
@@ -56,7 +64,13 @@ const getProductById = async (req: Request, res: Response) => {
       message: "Product fetched successfully!",
       data: result,
     });
-  } catch (error) {
+  } catch (error: any) {
+    if (error.message === "Product not found") {
+      return res.status(404).json({
+        success: false,
+        message: "Product not found!",
+      });
+    }
     res.status(500).json({
       success: false,
       message: "Something went wrong!",
@@ -70,18 +84,26 @@ const updateProduct = async (req: Request, res: Response) => {
     const { productId } = req.params;
     const validateData = PartialProductValidationSchema.parse(req.body);
     const result = await ProductService.updateProduct(productId, validateData);
-    if (!result) {
-      return res.status(404).json({
-        success: false,
-        message: "Product not found!",
-      });
-    }
+
     res.status(200).json({
       success: true,
       message: "Product updated successfully!",
       data: result,
     });
-  } catch (error) {
+  } catch (error: any) {
+    if (error instanceof z.ZodError) {
+      return res.status(400).json({
+        success: false,
+        message: "Validation error",
+        errors: error.errors,
+      });
+    }
+    if (error.message === "Product not found") {
+      return res.status(404).json({
+        success: false,
+        message: "Product not found!",
+      });
+    }
     res.status(500).json({
       success: false,
       message: "Something went wrong!",

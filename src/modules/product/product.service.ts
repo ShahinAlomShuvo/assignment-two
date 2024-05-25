@@ -20,10 +20,13 @@ const getAllProduct = async (searchTerm?: string) => {
 
 const getProductById = async (productId: string) => {
   const result = await ProductModel.findById(productId);
+  if (!result) throw new Error("Product not found");
   return result;
 };
 
 const updateProduct = async (productId: string, payLoad: PartialTProduct) => {
+  const isProductExist = await ProductModel.findById(productId);
+  if (!isProductExist) throw new Error("Product not found");
   const result = await ProductModel.findByIdAndUpdate(productId, payLoad, {
     new: true,
   });
