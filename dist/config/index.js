@@ -6,6 +6,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
 exports.default = {
-    db: process.env.DB_URL,
-    port: process.env.PORT,
+    port: process.env.PORT || 5000,
+    dbUri: process.env.DB_URL,
 };

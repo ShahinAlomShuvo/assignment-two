@@ -13,7 +13,7 @@ const createOrder = async (payLoad: TProductOrder) => {
     throw new Error("Insufficient quantity available in inventory");
   }
   const result = await ProductOrderModel.create(payLoad);
-  const updatedProduct = await ProductService.updatedProductQuantity(
+  await ProductService.updatedProductQuantity(
     payLoad.productId,
     payLoad.quantity
   );
