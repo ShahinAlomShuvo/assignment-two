@@ -17,3 +17,5 @@ export type TProduct = {
   variants: TVariant[];
   inventory: TInventory;
 };
+
+export type PartialTProduct = Partial<TProduct>;
