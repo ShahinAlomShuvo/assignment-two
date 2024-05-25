@@ -6,7 +6,9 @@ const VariantValidationSchema = z.object({
 });
 
 const InventoryValidationSchema = z.object({
-  quantity: z.number().gt(0, { message: "Quantity must be greater than 0" }),
+  quantity: z
+    .number()
+    .nonnegative({ message: "Quantity must be greater than 0" }),
   inStock: z.boolean(),
 });
 
